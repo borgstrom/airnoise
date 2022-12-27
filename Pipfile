@@ -10,8 +10,9 @@ python_version = '3.11.1'
 cli = "python cli.py"
 
 [packages]
-pyaudio = "0.2.13"
+pyaudio = "~=0.2"
 click = "~=8.1"
+paho-mqtt = "~=1.6"
 
 [dev-packages]
 pytest = ">=7.2.0,<8"

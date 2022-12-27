@@ -1,6 +1,10 @@
-from typing import Dict
+import audioop
+from typing import Dict, Iterator
 
 import pyaudio
+
+SAMPLING_RATE = 22050
+NUM_SAMPLES = 1024 * 4
 
 
 class Audio:
@@ -18,3 +22,16 @@ class Audio:
                 continue
             out[n] = info["name"]
         return out
+
+    def rms(self) -> Iterator[int]:
+        stream = self.audio.open(
+            format=pyaudio.paInt16,
+            channels=1,
+            rate=SAMPLING_RATE,
+            input=True,
+            frames_per_buffer=NUM_SAMPLES,
+        )
+        while True:
+            data = stream.read(NUM_SAMPLES)
+            rms = audioop.rms(data, 2)
+            yield rms

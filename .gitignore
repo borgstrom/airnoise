@@ -1,1 +1,4 @@
 __pycache__/
+mosquitto/data/
+mosquitto/config/password.txt
+mosquitto/log/mosquitto.log
