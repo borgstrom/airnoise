@@ -1,0 +1,20 @@
+[[source]]
+url = 'https://pypi.python.org/simple'
+verify_ssl = true
+name = 'pypi'
+
+[requires]
+python_version = '3.11.1'
+
+[scripts]
+cli = "python cli.py"
+
+[packages]
+pyaudio = "0.2.13"
+click = "~=8.1"
+
+[dev-packages]
+pytest = ">=7.2.0,<8"
+black = "*"
+isort = "*"
+ipython = "*"
