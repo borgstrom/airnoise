@@ -19,6 +19,7 @@ class MQTT:
     def __post_init__(self):
         log.info("Creating MQTT client")
         self.client = mqtt.Client()
+        self.client.enable_logger()
         self.client.username_pw_set(self.username, self.password)
 
     def connect(self) -> None:
@@ -27,6 +28,6 @@ class MQTT:
 
     def publish(self, topic: str, payload: Any):
         self.client.publish(
-            topic=f"{self.username}/topic",
+            topic=f"{self.username}/{topic}",
             payload=payload,
         )
