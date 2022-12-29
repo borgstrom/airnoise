@@ -1,5 +1,5 @@
 import audioop
-from typing import Dict, Iterator, Optional
+from typing import Dict, Iterator, Optional, Tuple
 
 import pyaudio
 
@@ -27,7 +27,9 @@ class Audio:
             out[n] = info["name"]
         return out
 
-    def rms(self, input_device_index: Optional[int] = None) -> Iterator[int]:
+    def data_and_rms(
+        self, input_device_index: Optional[int] = None
+    ) -> Iterator[Tuple[bytes, int]]:
         stream = self.audio.open(
             format=pyaudio.paInt16,
             channels=1,
@@ -39,4 +41,4 @@ class Audio:
         while True:
             data = stream.read(NUM_SAMPLES)
             rms = audioop.rms(data, 2)
-            yield rms
+            yield data, rms

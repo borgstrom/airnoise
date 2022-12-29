@@ -13,14 +13,11 @@ services:
       - ./mosquitto/log/:/mosquitto/log/:rw
 
   db:
-    image: mysql:8
+    image: postgis/postgis:15-3.3
     restart: always
     environment:
-      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
-      - MYSQL_DATABASE=airnoise
-      - MYSQL_USER=airnoise
-      - MYSQL_PASSWORD=airnoise
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     ports:
-      - "3306:3306"
+      - "5432:5432"
     volumes:
-      - ./mysql/data/:/var/lib/mysql:rw
+      - ./postgres/data/:/var/lib/postgresql/data:rw

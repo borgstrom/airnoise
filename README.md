@@ -1,5 +1,11 @@
 # AirNoise
 
+# Ubuntu dependencies
+
+```
+sudo apt install gdal-bin libpq-dev
+```
+
 # Setup dump1090
 
 RTL SDR used: [ADSBexchange.com Blue R820T2 RTL2832U, 0.5 PPM TCXO ADS-B SDR w/Amp and 1090 Mhz Filter](https://www.amazon.com/dp/B09F2ND4R6)
