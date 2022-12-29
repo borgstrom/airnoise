@@ -1,5 +1,5 @@
 import audioop
-from typing import Dict, Iterator
+from typing import Dict, Iterator, Optional
 
 import pyaudio
 
@@ -18,17 +18,22 @@ class Audio:
         out = {}
         for n in range(self.audio.get_device_count()):
             info = self.audio.get_device_info_by_index(n)
-            if info["maxInputChannels"] < 1:
+            try:
+                max_channels = int(info["maxInputChannels"])
+            except (ValueError, KeyError):
+                max_channels = 0
+            if max_channels < 1:
                 continue
             out[n] = info["name"]
         return out
 
-    def rms(self) -> Iterator[int]:
+    def rms(self, input_device_index: Optional[int] = None) -> Iterator[int]:
         stream = self.audio.open(
             format=pyaudio.paInt16,
             channels=1,
             rate=SAMPLING_RATE,
             input=True,
+            input_device_index=input_device_index,
             frames_per_buffer=NUM_SAMPLES,
         )
         while True:

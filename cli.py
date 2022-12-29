@@ -1,5 +1,6 @@
 import logging
 from dataclasses import dataclass
+from typing import Optional
 
 import click
 
@@ -54,13 +55,14 @@ def list_audio_devices(ctx: click.Context):
 
 
 @main.command()
+@click.option("--device-index", type=int, required=False)
 @click.pass_context
-def rms(ctx: click.Context):
+def rms(ctx: click.Context, device_index: Optional[int] = None):
     ctx.obj.mqtt.connect()
-    for val in ctx.obj.audio.rms():
+    for val in ctx.obj.audio.rms(input_device_index=device_index):
         ctx.obj.mqtt.publish("rms", val)
         log.debug("rms: %s", val)
 
 
 if __name__ == "__main__":
-    main()
+    main(auto_envvar_prefix="AIRNOISE")
