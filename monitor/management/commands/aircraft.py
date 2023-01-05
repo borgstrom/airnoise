@@ -1,7 +1,7 @@
 import logging
 
 from django.core.management.base import BaseCommand
-from monitor.adsb1090 import get_close_aircraft
+from monitor.dump1090 import get_close_aircraft
 from monitor.mqtt import MQTT
 
 log = logging.getLogger(__name__)

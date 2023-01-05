@@ -1,6 +1,6 @@
 import logging
 
-from django.core.management.base import BaseCommand, CommandError, CommandParser
+from django.core.management.base import BaseCommand, CommandParser
 
 from monitor.audio import Audio
 from monitor.mqtt import MQTT

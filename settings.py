@@ -29,14 +29,10 @@ env = environ.Env(
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve()
 
-
+# Dump1090 settings
 LAT = env.float("LAT")
 LON = env.float("LON")
 DUMP1090_AIRCRAFT_JSON = Path("/run/dump1090-mutability/aircraft.json")
-
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 SECRET_KEY = env.str("DJANGO_SECRET_KEY")
 
@@ -45,9 +41,6 @@ DEBUG = env.bool("DEBUG")
 ALLOWED_HOSTS = [
     "leetdesk.local",
 ]
-
-
-# Application definition
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -103,6 +96,13 @@ DATABASES = {
         "PASSWORD": env.str("POSTGRES_PASSWORD"),
     }
 }
+
+# InfluxDB
+
+INFLUXDB_ORG = "airnoise"
+INFLUXDB_BUCKET = "airnoise"
+INFLUXDB_TOKEN = env.str("INFLUXDB_ADMIN_TOKEN")
+INFLUXDB_URL = "http://127.0.0.1:8086"
 
 # MQTT
 

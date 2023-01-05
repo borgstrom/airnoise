@@ -9,6 +9,10 @@ import settings
 
 log = logging.getLogger(__name__)
 
+# Expose things so they can be imported and used for typing
+MQTTMessage = mqtt.MQTTMessage
+Client = mqtt.Client
+
 
 class MQTT:
     client: mqtt.Client
@@ -41,3 +45,7 @@ class MQTT:
             do_publish(retry=True)
 
         do_publish()
+
+    def subscribe(self, subscription: str, callback):
+        self.client.message_callback_add(subscription, callback)
+        self.client.subscribe(subscription)
