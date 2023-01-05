@@ -32,3 +32,4 @@ class FlightData(models.Model):
     )
     rms = models.IntegerField()
     point = models.PointField()
+    altitude = models.PositiveIntegerField()

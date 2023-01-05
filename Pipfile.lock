@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "acb9338fa3122e9500a55fca0735bae3f06146cd2a6f7df8bd92f35ee98c92fd"
+            "sha256": "eb6dbb418832dde2909aaa07b834917c6e3bc106c672ff35105e4763bf5f69d7"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -39,6 +39,14 @@
             ],
             "index": "pypi",
             "version": "==4.1.4"
+        },
+        "django-environ": {
+            "hashes": [
+                "sha256:bff5381533056328c9ac02f71790bd5bf1cea81b1beeb648f28b81c9e83e0a21",
+                "sha256:f21a5ef8cc603da1870bbf9a09b7e5577ab5f6da451b843dbcc721a7bca6b3d9"
+            ],
+            "index": "pypi",
+            "version": "==0.9.0"
         },
         "geographiclib": {
             "hashes": [
@@ -181,11 +189,11 @@
         },
         "ipython": {
             "hashes": [
-                "sha256:352042ddcb019f7c04e48171b4dd78e4c4bb67bf97030d170e154aac42b656d9",
-                "sha256:882899fe78d5417a0aa07f995db298fa28b58faeba2112d2e3a4c95fe14bb738"
+                "sha256:da01e6df1501e6e7c32b5084212ddadd4ee2471602e2cf3e0190f4de6b0ea481",
+                "sha256:f3bf2c08505ad2c3f4ed5c46ae0331a8547d36bf4b21a451e8ae80c0791db95b"
             ],
             "index": "pypi",
-            "version": "==8.7.0"
+            "version": "==8.8.0"
         },
         "isort": {
             "hashes": [
@@ -297,11 +305,11 @@
         },
         "pygments": {
             "hashes": [
-                "sha256:56a8508ae95f98e2b9bdf93a6be5ae3f7d8af858b43e02c5a2ff083726be40c1",
-                "sha256:f643f331ab57ba3c9d89212ee4a2dabc6e94f117cf4eefde99a0574720d14c42"
+                "sha256:b3ed06a9e8ac9a9aae5a6f5dbe78a8a58655d17b43b93c078f094ddc476ae297",
+                "sha256:fa7bd7bd2771287c0de303af8bfdfc731f51bd2c6a47ab69d117138893b82717"
             ],
             "markers": "python_version >= '3.6'",
-            "version": "==2.13.0"
+            "version": "==2.14.0"
         },
         "pytest": {
             "hashes": [

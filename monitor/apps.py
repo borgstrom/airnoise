@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class AircraftConfig(AppConfig):
+class MonitorConfig(AppConfig):
     default_auto_field = "django.db.models.BigAutoField"
-    name = "aircraft"
+    name = "monitor"

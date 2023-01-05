@@ -7,7 +7,7 @@ name = 'pypi'
 python_version = '3.11.1'
 
 [scripts]
-cli = "python cli.py"
+manage = "python manage.py"
 
 [packages]
 pyaudio = "==0.2.13"
@@ -16,6 +16,7 @@ paho-mqtt = "==1.6.1"
 django = "==4.1.4"
 psycopg2 = "~=2.9"
 geopy = "~=2.3"
+django-environ = "*"
 
 [dev-packages]
 pytest = ">=7.2.0,<8"

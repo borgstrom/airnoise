@@ -13,17 +13,34 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 import os
 from pathlib import Path
 
+import environ
+from django.core.exceptions import ImproperlyConfigured
+
+
+env = environ.Env(
+    # DEBUG defaults to False
+    DEBUG=(bool, False),
+    # LAT & LON are coords that are parsed as floats
+    LAT=float,
+    LON=float,
+)
+
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve()
+
+
+LAT = env.float("LAT")
+LON = env.float("LON")
+DUMP1090_AIRCRAFT_JSON = Path("/run/dump1090-mutability/aircraft.json")
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
-SECRET_KEY = os.environ["DJANGO_SECRET_KEY"]
+SECRET_KEY = env.str("DJANGO_SECRET_KEY")
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env.bool("DEBUG")
 
 ALLOWED_HOSTS = [
     "leetdesk.local",
@@ -40,7 +57,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django.contrib.gis",
-    "aircraft.apps.AircraftConfig",
+    "monitor.apps.MonitorConfig",
 ]
 
 MIDDLEWARE = [
@@ -83,9 +100,15 @@ DATABASES = {
         "HOST": "127.0.0.1",
         "NAME": "postgres",
         "USER": "postgres",
-        "PASSWORD": os.environ["POSTGRES_PASSWORD"],
+        "PASSWORD": env.str("POSTGRES_PASSWORD"),
     }
 }
+
+# MQTT
+
+MQTT_HOST = env.str("MQTT_HOST")
+MQTT_USERNAME = env.str("MQTT_USERNAME")
+MQTT_PASSWORD = env.str("MQTT_PASSWORD")
 
 
 # Password validation
@@ -128,3 +151,26 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# Logging
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "main": {
+            "format": "%(asctime)s %(levelname)s %(module)s:%(lineno)d %(message)s",
+            "style": "%",
+        },
+    },
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+            "formatter": "main",
+        },
+    },
+    "root": {
+        "handlers": ["console"],
+        "level": "DEBUG" if DEBUG else "INFO",
+    },
+}
