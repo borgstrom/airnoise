@@ -1,6 +1,7 @@
 import logging
 from queue import Queue
 from threading import Lock, Thread
+import time
 from typing import Any, Callable, Dict, Optional
 
 import paho.mqtt.client as mqtt
@@ -30,13 +31,19 @@ class MQTT:
         self.thread.start()
 
         self.client = mqtt.Client()
+        self.client.loop_start()
         self.client.enable_logger()
         self.client.username_pw_set(settings.MQTT_USERNAME, settings.MQTT_PASSWORD)
-        self.client.loop_start()
+        self.connect()
 
     def connect(self) -> None:
+        if self.client.is_connected():
+            return
+
         log.info(f"Connecting to {settings.MQTT_HOST}")
         self.client.connect(settings.MQTT_HOST)
+        while not self.client.is_connected():
+            time.sleep(0.1)
 
     def publish(self, topic: str, payload: Any):
         def do_publish(retry: bool = False):
@@ -58,6 +65,7 @@ class MQTT:
         do_publish()
 
     def message_handler(self):
+        log.info("Message handler starting")
         while True:
             subscription, msg = self.queue.get()
             with self.lock:
@@ -74,7 +82,7 @@ class MQTT:
 
     def subscribe(self, subscription: str, callback: Callable[[MQTTMessage], None]):
         def handle(client: Client, userdata: Optional[Any], msg: MQTTMessage):
-            self.queue.put_nowait((subscription, msg))
+            self.queue.put((subscription, msg))
 
         with self.lock:
             self.subscriptions[subscription] = callback

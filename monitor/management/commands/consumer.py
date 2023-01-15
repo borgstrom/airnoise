@@ -32,11 +32,9 @@ class Command(BaseCommand):
     def handle(self, *args, **options) -> None:
         self._locations = {}
         self.influx = Influx()
-
         self.last_rms = 0
 
         mqtt = MQTT()
-        mqtt.connect()
         mqtt.subscribe("+/rms", self.on_rms)
         mqtt.subscribe("+/flight", self.on_flight)
         mqtt.subscribe("+/audio", self.on_audio)
