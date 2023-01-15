@@ -1,9 +1,9 @@
-from dataclasses import dataclass, field
-from typing import Any
+import logging
+from queue import Queue
+from threading import Lock, Thread
+from typing import Any, Callable, Dict, Optional
 
 import paho.mqtt.client as mqtt
-
-import logging
 
 import settings
 
@@ -15,13 +15,24 @@ Client = mqtt.Client
 
 
 class MQTT:
-    client: mqtt.Client
+    client: Client
+    thread: Thread
+    queue: Queue
+    lock: Lock
+    subscriptions: Dict[str, Callable[[MQTTMessage], None]]
 
     def __init__(self):
         log.info("Creating MQTT client")
+        self.subscriptions = {}
+        self.queue = Queue()
+        self.lock = Lock()
+        self.thread = Thread(target=self.message_handler, daemon=True)
+        self.thread.start()
+
         self.client = mqtt.Client()
         self.client.enable_logger()
         self.client.username_pw_set(settings.MQTT_USERNAME, settings.MQTT_PASSWORD)
+        self.client.loop_start()
 
     def connect(self) -> None:
         log.info(f"Connecting to {settings.MQTT_HOST}")
@@ -46,6 +57,27 @@ class MQTT:
 
         do_publish()
 
-    def subscribe(self, subscription: str, callback):
-        self.client.message_callback_add(subscription, callback)
+    def message_handler(self):
+        while True:
+            subscription, msg = self.queue.get()
+            with self.lock:
+                callback = self.subscriptions.get(subscription, None)
+            if callback:
+                try:
+                    callback(msg)
+                except Exception:
+                    log.exception(
+                        "Failed to handle message in subscription: %s -> %s",
+                        subscription,
+                        msg,
+                    )
+
+    def subscribe(self, subscription: str, callback: Callable[[MQTTMessage], None]):
+        def handle(client: Client, userdata: Optional[Any], msg: MQTTMessage):
+            self.queue.put_nowait((subscription, msg))
+
+        with self.lock:
+            self.subscriptions[subscription] = callback
+
+        self.client.message_callback_add(subscription, handle)
         self.client.subscribe(subscription)

@@ -17,9 +17,10 @@ psycopg2 = "~=2.9"
 geopy = "~=2.3"
 django-environ = "~=0.9"
 influxdb-client = "~=1.35"
+schedule = "~=1.1"
 
 [dev-packages]
 pytest = "~=7.2"
-black = "~=22.12"
 isort = "~=5.11"
 ipython = "*"
+black = "*"

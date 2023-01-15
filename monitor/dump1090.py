@@ -49,4 +49,6 @@ def get_close_aircraft() -> Iterator[str]:
                 f"{flight['hex']} ({flight.get('flight')}) distance: {dist.miles} altitutde: {flight.get('altitude')}"
             )
 
+            flight["distance"] = str(dist.miles)
+
             yield json.dumps(flight)

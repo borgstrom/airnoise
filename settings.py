@@ -159,7 +159,7 @@ LOGGING = {
     "disable_existing_loggers": False,
     "formatters": {
         "main": {
-            "format": "%(asctime)s %(levelname)s %(module)s:%(lineno)d %(message)s",
+            "format": "%(asctime)s %(levelname)s %(thread)d %(module)s:%(lineno)d %(message)s",
             "style": "%",
         },
     },
@@ -171,6 +171,7 @@ LOGGING = {
     },
     "root": {
         "handlers": ["console"],
-        "level": "DEBUG" if DEBUG else "INFO",
+        "level": "INFO"
+        # "level": "DEBUG" if DEBUG else "INFO",
     },
 }
